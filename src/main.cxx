@@ -28,6 +28,10 @@
 #include "HandleScaler.h"
 #include "HandleV1740.h"
 
+#include "IScaler.cxx"
+#include "IDet.cxx"
+#include "ITdc.cxx"
+
 // Global Variables
 int  gRunNumber = 0;
 int  gEventNumber = 0;
