@@ -31,13 +31,19 @@ CXXFLAGS      += -g -Wall -ansi -Df2cFortran -fPIC $(ROOTCFLAGS)
 
 ANAOBJECTS  =  $(OBJECTDIR)/HandleMesytec.o $(OBJECTDIR)/HandleV1190.o $(OBJECTDIR)/HandleSTAT.o $(LIBDIR)/libTEvent.so $(OBJECTDIR)/TEventDict.o $(OBJECTDIR)/HandleScaler.o  $(OBJECTDIR)/CalibMesytec.o $(OBJECTDIR)/geometry.o $(OBJECTDIR)/HandleV1740.o
 
+#us these flags if linux
 SOFLAGS       = -g -shared
 LDFLAGS	      = -O2	
+
+#for MacOS
+#SOFLAGS       = -g -dynamiclib -shared
+#LDFLAGS       = -O2     -undefined dynamic_lookup
 
 all: $(BINARYDIR)/treeIris $(LIBDIR)/libTEvent.so
 
 $(BINARYDIR)/treeIris: $(ANAOBJECTS) $(OBJECTDIR)/treeIris.o $(ROOTANA)/lib/librootana.a $(IRISLIB)
-	$(CXX) -o $@ $(CXXFLAGS) $^ $(ROOTGLIBS) $(IRISLIB) -lm -lz -lutil -lnsl -lpthread -lrt
+	$(CXX) -o $@ $(CXXFLAGS) $^ $(ROOTGLIBS) $(IRISLIB) -lm -lz -lutil -lnsl -lpthread -lrt 
+	#remove -lnsl and -lrt for MacOS
 
 $(LIBDIR)/libTEvent.so: $(OBJECTDIR)/IDet.o $(OBJECTDIR)/ITdc.o $(OBJECTDIR)/IScaler.o $(OBJECTDIR)/TEventDict.o
 	$(LD) $(SOFLAGS) $(LDFLAGS) $^ -o $@
